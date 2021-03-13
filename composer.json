@@ -1,0 +1,5 @@
+{
+    "require": {
+        "signnow/api-php-sdk": "^1.0"
+    }
+}
