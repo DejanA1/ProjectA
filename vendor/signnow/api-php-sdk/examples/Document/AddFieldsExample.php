@@ -55,7 +55,7 @@ class AddFieldsExample extends BaseExample
     public function execute()
     {
         /************Upload document *********************/
-        $file_path = "http://contractors10.com/url-to-signNow/ORDER FORM BLANK.pdf";
+        $file_path = "..\ORDER FORM BLANK.pdf";
         $doc = new Upload(new \SplFileInfo($file_path));
         $document = $this->entityManager->create($doc);
 
@@ -69,7 +69,10 @@ class AddFieldsExample extends BaseExample
         if(isset($_GET['phone'])) $phone = $_GET['phone']; else $phone = "";
         if(isset($_GET['website'])) $website = $_GET['website']; else $website = "";
         if(isset($_GET['transaction'])) $transaction = $_GET['transaction']; else $transaction = "";
+        if(isset($_GET['delete'])) $delete_en = $_GET['delete']; else $delete_en = false;
 
+        $cur_date = getdate();
+        $date_string = $cur_date['mday']."/".$cur_date['mon']."/".$cur_date['year'];
         /****************Prefill *****************/
         $signature = (new SignatureField())
             ->setName('Please sign here')
@@ -77,12 +80,12 @@ class AddFieldsExample extends BaseExample
             ->setRole('signer')
             ->setRequired(true)
             ->setHeight(20)
-            ->setWidth(100)
+            ->setWidth(200)
             ->setX(325)
             ->setY(435);
         $text_transaction = (new TextField())
             ->setName('text_transaction')
-            ->setLabel('text_transaction')
+            ->setLabel('Cannot edit')
             ->setPrefilledText($transaction)
             ->setPageNumber(0)
             ->setRole('signer')
@@ -93,7 +96,7 @@ class AddFieldsExample extends BaseExample
             ->setY(90);
         $text_return_business = (new TextField())
             ->setName('text_return_business')
-            ->setLabel('text_return_business')
+            ->setLabel('Business')
             ->setPrefilledText($BusinessName)
             ->setPageNumber(0)
             ->setRole('signer')
@@ -104,7 +107,7 @@ class AddFieldsExample extends BaseExample
             ->setY(128);
         $text_return_address = (new TextField())
             ->setName('text_return_address')
-            ->setLabel('text_return_address')
+            ->setLabel('address')
             ->setPrefilledText($Address)
             ->setPageNumber(0)
             ->setRole('signer')
@@ -115,7 +118,7 @@ class AddFieldsExample extends BaseExample
             ->setY(151);
         $text_return_city = (new TextField())
             ->setName('text_return_city')
-            ->setLabel('text_return_city')
+            ->setLabel('city')
             ->setPrefilledText($city." ".$state." ".$zip)
             ->setPageNumber(0)
             ->setRole('signer')
@@ -126,7 +129,7 @@ class AddFieldsExample extends BaseExample
             ->setY(175);
         $text_verify_BusinessName = (new TextField())
             ->setName('text_verify_BusinessName')
-            ->setLabel('text_verify_BusinessName')
+            ->setLabel('business')
             ->setPrefilledText($BusinessName)
             ->setPageNumber(0)
             ->setRole('signer')
@@ -137,7 +140,7 @@ class AddFieldsExample extends BaseExample
             ->setY(411);
         $text_verify_Address = (new TextField())
             ->setName('text_verify_Address')
-            ->setLabel('text_verify_Address')
+            ->setLabel('address')
             ->setPrefilledText($Address)
             ->setPageNumber(0)
             ->setRole('signer')
@@ -148,7 +151,7 @@ class AddFieldsExample extends BaseExample
             ->setY(435);
         $text_verify_city = (new TextField())
             ->setName('text_verify_city')
-            ->setLabel('text_verify_city')
+            ->setLabel('city')
             ->setPrefilledText($city." ".$state." ".$zip)
             ->setPageNumber(0)
             ->setRole('signer')
@@ -159,7 +162,7 @@ class AddFieldsExample extends BaseExample
             ->setY(458);
         $text_phone = (new TextField())
             ->setName('text_phone')
-            ->setLabel('text_phone')
+            ->setLabel('phone')
             ->setPrefilledText('')
             ->setPageNumber(0)
             ->setRole('signer')
@@ -171,112 +174,112 @@ class AddFieldsExample extends BaseExample
 
         $text_print_name = (new TextField())
             ->setName('text_print_name')
-            ->setLabel('text_print_name')
+            ->setLabel('Full Name')
             ->setPrefilledText('')
             ->setPageNumber(0)
             ->setRole('signer')
-            ->setRequired(false)
+            ->setRequired(true)
             ->setHeight(23)
             ->setWidth(130)
             ->setX(306)
             ->setY(469);
         $text_date = (new TextField())
             ->setName('text_date')
-            ->setLabel('text_date')
-            ->setPrefilledText('')
+            ->setLabel('date')
+            ->setPrefilledText($date_string)
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
             ->setHeight(23)
             ->setWidth(108)
             ->setX(465)
-            ->setY(469);
+            ->setY(471);
         $text_business = (new TextField())
             ->setName('text_business')
-            ->setLabel('text_business')
+            ->setLabel('Type Business Category')
             ->setPrefilledText('')
             ->setPageNumber(0)
             ->setRole('signer')
-            ->setRequired(false)
-            ->setHeight(15)
+            ->setRequired(true)
+            ->setHeight(11)
             ->setWidth(175)
             ->setX(100)
-            ->setY(560);
+            ->setY(566);
         $text_website = (new TextField())
             ->setName('text_website')
-            ->setLabel('text_website')
+            ->setLabel('website')
             ->setPrefilledText($website)
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
-            ->setHeight(15)
+            ->setHeight(11)
             ->setWidth(222)
             ->setX(55)
-            ->setY(579);
+            ->setY(585);
         
         $text_email = (new TextField())
             ->setName('text_email')
-            ->setLabel('text_email')
+            ->setLabel('email')
             ->setPrefilledText($email)
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
-            ->setHeight(15)
+            ->setHeight(11)
             ->setWidth(225)
             ->setX(55)
-            ->setY(600);
+            ->setY(606);
         $text_tollfree = (new TextField())
             ->setName('text_tollfree')
-            ->setLabel('text_tollfree')
+            ->setLabel('Toll-free Number')
             ->setPrefilledText('')
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
-            ->setHeight(15)
+            ->setHeight(11)
             ->setWidth(220)
             ->setX(60)
-            ->setY(622);
+            ->setY(626);
         $text_spec_1 = (new TextField())
             ->setName('text_spec_1')
-            ->setLabel('text_spec_1')
+            ->setLabel(' ')
             ->setPrefilledText('')
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
-            ->setHeight(30)
+            ->setHeight(25)
             ->setWidth(272)
             ->setX(306)
             ->setY(538);
         $text_spec_2 = (new TextField())
             ->setName('text_spec_2')
-            ->setLabel('text_spec_2')
+            ->setLabel(' ')
             ->setPrefilledText('')
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
-            ->setHeight(30)
+            ->setHeight(25)
             ->setWidth(272)
             ->setX(306)
             ->setY(561);
         $text_spec_3 = (new TextField())
             ->setName('text_spec_3')
-            ->setLabel('text_spec_3')
+            ->setLabel(' ')
             ->setPrefilledText('')
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
-            ->setHeight(30)
+            ->setHeight(25)
             ->setWidth(272)
             ->setX(306)
             ->setY(584); 
         $text_spec_4 = (new TextField())
             ->setName('text_spec_4')
-            ->setLabel('text_spec_4')
+            ->setLabel(' ')
             ->setPrefilledText('')
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
-            ->setHeight(30)
+            ->setHeight(25)
             ->setWidth(272)
             ->setX(306)
             ->setY(607);                               
@@ -315,10 +318,11 @@ class AddFieldsExample extends BaseExample
         $fieldInvite = new Invite($this->arguments['from'], $to, $cc);
         
         $result = $this->entityManager->create($fieldInvite, ['documentId' => $documentId]);
-        $this->entityManager->delete($document, ['id' => $documentId]);
+        if($delete_en)
+            $this->entityManager->delete($document, ['id' => $documentId]);
         if($result->getStatus() == "success")
-            echo "Send is successed";
+            echo "The Revision Form has been Sent";
         else
-            echo "Send is denied";
+            echo "The Revision Form has been not Sent";
     }
 }

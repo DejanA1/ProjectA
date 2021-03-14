@@ -50,3 +50,6 @@ try {
 
 // {!! General::selectMultiLevel('parent_id', $categories, ['class' => 'form-control', 'selected' => old('parent_id') ?? $category['parent_id'] ?? '', 'placeholder'=>'---Chose Category---' ]) !!}
 // {!! General::selectMultiLevel('parent_id', $categories, ['class' => 'form-control', 'selected' => !empty(old('parent_id')) ? old('parent_id') : !empty($category['parent_id']) ? $category['parent_id'] : '', 'placeholder'=>'---Chose Category---' ]) !!}
+
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © andrey
