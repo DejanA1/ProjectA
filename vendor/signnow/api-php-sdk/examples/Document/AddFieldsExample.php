@@ -55,7 +55,7 @@ class AddFieldsExample extends BaseExample
     public function execute()
     {
         /************Upload document *********************/
-        $file_path = "..\ORDER FORM BLANK.pdf";
+        $file_path = "../BUSINESS INFORMATION.pdf";
         $doc = new Upload(new \SplFileInfo($file_path));
         $document = $this->entityManager->create($doc);
 
