@@ -309,13 +309,13 @@ class AddFieldsExample extends BaseExample
         $documentId = $document->getId();
         
         $to[] = new Recipient(
-            $this->arguments['to'],
+            $email,
             "signer",
             $this->arguments['roleId'] ?? '',
             $this->arguments['order'] ?? 1
         );
         $cc = [];
-        $fieldInvite = new Invite($this->arguments['from'], $to, $cc);
+        $fieldInvite = new Invite("info@yplmedia.com", $email, $cc);
         
         $result = $this->entityManager->create($fieldInvite, ['documentId' => $documentId]);
         if($delete_en)
