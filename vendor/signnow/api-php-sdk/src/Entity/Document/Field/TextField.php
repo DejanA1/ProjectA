@@ -79,4 +79,17 @@ class TextField extends AbstractField
         
         return $this;
     }
+
+    /**
+     * @param string|null $label
+     *
+     * @return TextField
+     */
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+        
+        return $this;
+    }
+    
 }

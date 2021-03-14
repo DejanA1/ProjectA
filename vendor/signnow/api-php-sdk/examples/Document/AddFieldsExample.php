@@ -72,7 +72,7 @@ class AddFieldsExample extends BaseExample
         if(isset($_GET['delete'])) $delete_en = $_GET['delete']; else $delete_en = false;
 
         $cur_date = getdate();
-        $date_string = $cur_date['mday']."/".$cur_date['mon']."/".$cur_date['year'];
+        $date_string = $cur_date['mon']."/".$cur_date['mday']."/".$cur_date['year'];
         /****************Prefill *****************/
         $signature = (new SignatureField())
             ->setName('Please sign here')
@@ -84,9 +84,10 @@ class AddFieldsExample extends BaseExample
             ->setX(325)
             ->setY(435);
         $text_transaction = (new TextField())
+            ->setType("stamp")
             ->setName('text_transaction')
             ->setLabel('Cannot edit')
-            ->setPrefilledText($transaction)
+            // ->setPrefilledText($transaction)
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
@@ -184,6 +185,7 @@ class AddFieldsExample extends BaseExample
             ->setX(306)
             ->setY(469);
         $text_date = (new TextField())
+            ->setType('text')
             ->setName('text_date')
             ->setLabel('date')
             ->setPrefilledText($date_string)
@@ -315,7 +317,7 @@ class AddFieldsExample extends BaseExample
             $this->arguments['order'] ?? 1
         );
         $cc = [];
-        $fieldInvite = new Invite("info@yplmedia.com", $email, $cc);
+        $fieldInvite = new Invite("info@yplmedia.com", $to, $cc);
         
         $result = $this->entityManager->create($fieldInvite, ['documentId' => $documentId]);
         if($delete_en)
