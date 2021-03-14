@@ -84,10 +84,10 @@ class AddFieldsExample extends BaseExample
             ->setX(325)
             ->setY(435);
         $text_transaction = (new TextField())
-            ->setType("stamp")
+            ->setType("text")
             ->setName('text_transaction')
             ->setLabel('Cannot edit')
-            // ->setPrefilledText($transaction)
+            ->setPrefilledText($transaction)
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(false)
