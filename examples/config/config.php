@@ -30,12 +30,12 @@ return [
     ],
     'parameters' => [
         'authtype' => 'Bearer',
-        'token' => '30fb018f28fb2808b05d64d625cdae905da8ab4d72600566a2144de02f55c38e',
-        'host' => 'https://api-eval.signnow.com/',
+        'token' => '6e2889dc26ea6a50aa84e83e58d06804119d2cb84af2149bc10ba02472a031d7',
+        'host' => 'https://api.signnow.com/',
         'username' => 'info@yplmedia.com',
         'password' => 'SignNow2192',
         'scope' => '*',
         'code' => "AUTHORIZATION_CODE",
-        'refresh_token' => '2c8f25f6200fb84e90ddf806ccbf2a5003f0ba13179494b690e284a0d672e135 ',
+        'refresh_token' => '449d460d3ced269ae57f2bc2319b6e4db0656fa5348e9fa88876cc5aba1cb60e',
     ],
 ];

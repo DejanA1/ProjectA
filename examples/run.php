@@ -11,7 +11,11 @@ $config = require_once __DIR__ . '/config/config.php';
 AnnotationRegistry::registerLoader('class_exists');
 $parameters = ["authtype:", "token:", "script:", "host:"];
 // $arguments = getopt('', $parameters);
-$arguments['script'] = 'add_fields';
+if(isset($_GET['script'])) $script = $_GET['script']; else $script = false;
+if(!$script)
+    $arguments['script'] = 'add_fields';
+else
+    $arguments['script'] = $script;
 foreach ($parameters as $parameter) {
     $key = trim($parameter, ':');
     if (!isset($arguments[$key])) {

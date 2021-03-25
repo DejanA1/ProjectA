@@ -33,6 +33,12 @@ use SignNow\Rest\EntityManager\Annotation\HttpEntity;
 use SignNow\Rest\EntityManager\Annotation\ResponseType;
 
 
+// Event create
+use ReflectionException;
+use SignNow\Api\Entity\EventSubscription\CreateEventSubscription;
+use SignNow\Api\Entity\EventSubscription\EventSubscriptionResponse;
+use SignNow\Rest\EntityManager\Exception\EntityManagerException;
+
 /**
  * Class AddFieldsExample
  *
@@ -70,6 +76,9 @@ class AddFieldsExample extends BaseExample
         if(isset($_GET['website'])) $website = $_GET['website']; else $website = "";
         if(isset($_GET['transaction'])) $transaction = $_GET['transaction']; else $transaction = "";
         if(isset($_GET['delete'])) $delete_en = $_GET['delete']; else $delete_en = false;
+        if(isset($_GET['disableBusiness'])) $disableBusiness = true; else $disableBusiness = false;
+        if(isset($_GET['subject'])) $subject = $_GET['subject']; else $subject = "info@yplmedia.com Needs Your Signature";
+        if(isset($_GET['message'])) $message =  $_GET['message']; else $message = "You've been invited by info@yplmedia.com to fill out and sign the BUSINESS INFORMATION document.";
 
         $cur_date = getdate();
         $date_string = $cur_date['mon']."/".$cur_date['mday']."/".$cur_date['year'];
@@ -284,27 +293,49 @@ class AddFieldsExample extends BaseExample
             ->setHeight(25)
             ->setWidth(272)
             ->setX(306)
-            ->setY(607);                               
-        $document->setFields([
-            $signature,
-            $text_transaction,
-            $text_return_business,
-            $text_return_address,
-            $text_return_city,
-            $text_verify_Address,
-            $text_verify_BusinessName,
-            $text_verify_city,
-            $text_business,
-            $text_website,
-            $text_email,
-            $text_tollfree,
-            $text_spec_1,
-            $text_spec_2,
-            $text_spec_3,
-            $text_spec_4,
-            $text_print_name,
-            $text_date
-        ]);
+            ->setY(607);
+        if($disableBusiness){                               
+            $document->setFields([
+                $signature,
+                $text_transaction,
+                $text_return_business,
+                $text_return_address,
+                $text_return_city,
+                $text_verify_Address,
+                $text_verify_BusinessName,
+                $text_verify_city,
+                $text_website,
+                $text_email,
+                $text_tollfree,
+                $text_spec_1,
+                $text_spec_2,
+                $text_spec_3,
+                $text_spec_4,
+                $text_print_name,
+                $text_date
+            ]);
+        }else {
+            $document->setFields([
+                $signature,
+                $text_transaction,
+                $text_return_business,
+                $text_return_address,
+                $text_return_city,
+                $text_verify_Address,
+                $text_verify_BusinessName,
+                $text_verify_city,
+                $text_business,
+                $text_website,
+                $text_email,
+                $text_tollfree,
+                $text_spec_1,
+                $text_spec_2,
+                $text_spec_3,
+                $text_spec_4,
+                $text_print_name,
+                $text_date
+            ]);
+        }
 
         //update document with prefilled data
         $this->entityManager->update($document);
@@ -317,14 +348,18 @@ class AddFieldsExample extends BaseExample
             $this->arguments['order'] ?? 1
         );
         $cc = [];
-        $fieldInvite = new Invite("info@yplmedia.com", $to, $cc);
-        
+        $fieldInvite = (new Invite("info@yplmedia.com", $to, $cc, $subject, $message));
+
         $result = $this->entityManager->create($fieldInvite, ['documentId' => $documentId]);
+
         if($delete_en)
             $this->entityManager->delete($document, ['id' => $documentId]);
+        
         if($result->getStatus() == "success")
             echo "The Revision Form has been Sent";
         else
             echo "The Revision Form has been not Sent";
+
     }
 }
+

@@ -43,11 +43,24 @@ class Invite extends Entity
      * @param array  $to
      * @param array  $cc
      */
-    public function __construct(string $from, array $to, array $cc = [])
+    protected $subject;
+    
+    /**
+     * @var string|null
+     * @Serializer\Type("string")
+     */
+    protected $message;
+    
+    /**
+     * @return string|null
+     */
+    public function __construct(string $from, array $to, array $cc = [], string $subject = "", string $message = "")
     {
         $this->from = $from;
         $this->to = $to;
         $this->cc = $cc;
+        $this->subject = $subject;
+        $this->message = $message;
     }
     
     /**
@@ -72,5 +85,29 @@ class Invite extends Entity
     public function getCc(): array
     {
         return $this->cc;
+    }
+
+    /**
+     * @param string $subject
+     *
+     * @return Invite
+     */
+    public function setSubject(string $subject): self
+    {
+        $this->subject = $subject;
+        
+        return $this;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return Invite
+     */
+    public function setMessage(string $message): self
+    {
+        $this->message = $message;
+        
+        return $this;
     }
 }
