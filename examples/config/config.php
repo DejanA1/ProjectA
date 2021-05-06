@@ -29,13 +29,14 @@ return [
         'delete_event_subscription' => DeleteUserEventSubscriptionExample::class,
     ],
     'parameters' => [
+        // 'authtype' => 'Basic',
         'authtype' => 'Bearer',
-        'token' => '6e2889dc26ea6a50aa84e83e58d06804119d2cb84af2149bc10ba02472a031d7',
+        'token' => '21dfd297aec3e8c11da665a34fe62b108869617b742da23c6090989fbbb01697',
         'host' => 'https://api.signnow.com/',
         'username' => 'info@yplmedia.com',
         'password' => 'SignNow2192',
         'scope' => '*',
         'code' => "AUTHORIZATION_CODE",
-        'refresh_token' => '449d460d3ced269ae57f2bc2319b6e4db0656fa5348e9fa88876cc5aba1cb60e',
+        'refresh_token' => '97c0cf489120652b644c3a838452e92c3f1cc8de5089055f38b555b0e15ff4b1',
     ],
 ];

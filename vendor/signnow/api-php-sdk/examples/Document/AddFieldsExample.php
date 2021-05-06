@@ -60,8 +60,9 @@ class AddFieldsExample extends BaseExample
      */
     public function execute()
     {
+        $config = require_once __DIR__.'/../config/config.php';
         /************Upload document *********************/
-        $file_path = "../BUSINESS INFORMATION.pdf";
+        $file_path = "../BUSINESSNAME.pdf";
         $doc = new Upload(new \SplFileInfo($file_path));
         $document = $this->entityManager->create($doc);
 
@@ -75,11 +76,12 @@ class AddFieldsExample extends BaseExample
         if(isset($_GET['phone'])) $phone = $_GET['phone']; else $phone = "";
         if(isset($_GET['website'])) $website = $_GET['website']; else $website = "";
         if(isset($_GET['transaction'])) $transaction = $_GET['transaction']; else $transaction = "";
+        if(isset($_GET['fullName'])) $fullName = $_GET['fullName']; else $fullName = "";
+        if(isset($_GET['category'])) $category = $_GET['category']; else $category = "";
         if(isset($_GET['delete'])) $delete_en = $_GET['delete']; else $delete_en = false;
         if(isset($_GET['disableBusiness'])) $disableBusiness = true; else $disableBusiness = false;
         if(isset($_GET['subject'])) $subject = $_GET['subject']; else $subject = "info@yplmedia.com Needs Your Signature";
-        if(isset($_GET['message'])) $message =  $_GET['message']; else $message = "You've been invited by info@yplmedia.com to fill out and sign the BUSINESS INFORMATION document.";
-
+        if(isset($_GET['message'])) $message =  $_GET['message']; else $message = "You've been invited by info@yplmedia.com to fill out and sign the BUSINESSNAME document.";
         $cur_date = getdate();
         $date_string = $cur_date['mon']."/".$cur_date['mday']."/".$cur_date['year'];
         /****************Prefill *****************/
@@ -185,7 +187,7 @@ class AddFieldsExample extends BaseExample
         $text_print_name = (new TextField())
             ->setName('text_print_name')
             ->setLabel('Full Name')
-            ->setPrefilledText('')
+            ->setPrefilledText($fullName)
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(true)
@@ -208,7 +210,7 @@ class AddFieldsExample extends BaseExample
         $text_business = (new TextField())
             ->setName('text_business')
             ->setLabel('Type Business Category')
-            ->setPrefilledText('')
+            ->setPrefilledText($category)
             ->setPageNumber(0)
             ->setRole('signer')
             ->setRequired(true)
@@ -355,11 +357,91 @@ class AddFieldsExample extends BaseExample
         if($delete_en)
             $this->entityManager->delete($document, ['id' => $documentId]);
         
-        if($result->getStatus() == "success")
-            echo "The Revision Form has been Sent";
+        if($result->getStatus() == "success"){
+            echo "The Revision Form has been Sent<br>";
+            echo "You can manually invite by using this  https://app.signnow.com/webapp/invite/".$documentId;
+        }
         else
             echo "The Revision Form has been not Sent";
+        echo "<br>";
+        echo "set Signed Event status---";
+        $curl = curl_init();
 
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api.signnow.com/api/v2/events',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS =>'{
+        "event": "document.fieldinvite.signed",
+        "entity_id": "'.$documentId.'",
+        "action": "callback",
+        "attributes": {
+            "callback": "http://Yp.team/na2/notify_system.asp?status=Signed&phone='.$phone.'",
+            "use_tls_12": true,
+            "docid_queryparam": true,
+            "headers": {
+            "string_head": "test",
+            "int_head": 12,
+            "bool_head": false,
+            "float_head": 12.24
+            }
+        }
+        }',
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            'Authorization: Bearer '.$config['parameters']['token']
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+
+        echo "<br>";
+        echo "set Declined Event status---";
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.signnow.com/api/v2/events',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS =>'{
+            "event": "document.fieldinvite.decline",
+            "entity_id": "'.$documentId.'",
+            "action": "callback",
+            "attributes": {
+                "callback": "http://Yp.team/na2/notify_system.asp?status=Declined&phone='.$phone.'",
+                "use_tls_12": true,
+                "docid_queryparam": true,
+                "headers": {
+                "string_head": "test",
+                "int_head": 12,
+                "bool_head": false,
+                "float_head": 12.24
+                }
+            }
+            }',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer '.$config['parameters']['token']
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
     }
 }
 

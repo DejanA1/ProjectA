@@ -19,7 +19,8 @@ class CreateUserEventSubscriptionExample extends BaseExample
     /**
      * @var array
      */
-    protected $requiredParameters = ["event:", "callbackUrl:"];
+    // protected $requiredParameters = ["event:", "callbackUrl:"];
+    protected $requiredParameters = ["event:"];
     
     /**
      * @var array
@@ -38,7 +39,9 @@ class CreateUserEventSubscriptionExample extends BaseExample
             (new CreateEventSubscription())
             ->setEvent($this->arguments['event'])
             ->setCallbackUrl($this->arguments['callbackUrl'])
+            // ->setCallbackUrl("http://contractors10.com/url-to-signNow/examples/run.php?role=signer&BusinessName=afterSignt&Address=111+woods+ave+&city=afterSign&state=fl&zip=12345&email=jacobandrey971@gmail.com&fax=123&website=sldks.sdf.sdf&transaction=afterSign")
             ->setUseTls12($this->arguments['useTls12'])
+            ->setentityId($this->arguments['entityId'])
             ->setIntegrationId($this->arguments['integrationId'])
             ->setDocidQueryparam($this->arguments['docidQueryparam'])
         );

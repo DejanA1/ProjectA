@@ -41,6 +41,12 @@ class CreateEventSubscription extends Entity
      * @Serializer\Type("string")
      */
     private $integrationId;
+
+    /**
+     * @var string|null
+     * @Serializer\Type("string")
+     */
+    private $entityId;
     
     /**
      * @var boolean|null
@@ -128,6 +134,13 @@ class CreateEventSubscription extends Entity
         return $this;
     }
     
+    public function setEntityId(?string $entityId): self
+    {
+        $this->entityId = $entityId;
+        
+        return $this;
+    }
+
     /**
      * @return bool|null
      */

@@ -255,3 +255,4 @@ $entityManager->delete(
     ['uniqueId' => $uniqueId]
 );
 ```
+
