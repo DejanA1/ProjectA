@@ -78,6 +78,7 @@ class AddFieldsExample extends BaseExample
         if(isset($_GET['transaction'])) $transaction = $_GET['transaction']; else $transaction = "";
         if(isset($_GET['fullName'])) $fullName = $_GET['fullName']; else $fullName = "";
         if(isset($_GET['category'])) $category = $_GET['category']; else $category = "";
+        if(isset($_GET['hookType'])) $hookType = $_GET['hookType']; else $hookType = false;
         if(isset($_GET['delete'])) $delete_en = $_GET['delete']; else $delete_en = false;
         if(isset($_GET['disableBusiness'])) $disableBusiness = true; else $disableBusiness = false;
         if(isset($_GET['subject'])) $subject = $_GET['subject']; else $subject = "info@yplmedia.com Needs Your Signature";
@@ -363,51 +364,12 @@ class AddFieldsExample extends BaseExample
         }
         else
             echo "The Revision Form has been not Sent";
-        echo "<br>";
-        echo "set Signed Event status---";
-        $curl = curl_init();
+        if($hookType == false || $hookType == "1") {
+            echo "<br>";
+            echo "set Signed Event status---";
+            $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api.signnow.com/api/v2/events',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS =>'{
-        "event": "document.fieldinvite.signed",
-        "entity_id": "'.$documentId.'",
-        "action": "callback",
-        "attributes": {
-            "callback": "http://Yp.team/na2/notify_system.asp?status=Signed&phone='.$phone.'",
-            "use_tls_12": true,
-            "docid_queryparam": true,
-            "headers": {
-            "string_head": "test",
-            "int_head": 12,
-            "bool_head": false,
-            "float_head": 12.24
-            }
-        }
-        }',
-        CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json',
-            'Authorization: Bearer '.$config['parameters']['token']
-        ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        echo $response;
-
-        echo "<br>";
-        echo "set Declined Event status---";
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
+            curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.signnow.com/api/v2/events',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -417,11 +379,11 @@ class AddFieldsExample extends BaseExample
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS =>'{
-            "event": "document.fieldinvite.decline",
+            "event": "document.fieldinvite.signed",
             "entity_id": "'.$documentId.'",
             "action": "callback",
             "attributes": {
-                "callback": "http://Yp.team/na2/notify_system.asp?status=Declined&phone='.$phone.'",
+                "callback": "http://Yp.team/na2/notify_system.asp?status=Signed&phone='.$phone.'",
                 "use_tls_12": true,
                 "docid_queryparam": true,
                 "headers": {
@@ -436,12 +398,54 @@ class AddFieldsExample extends BaseExample
                 'Content-Type: application/json',
                 'Authorization: Bearer '.$config['parameters']['token']
             ),
-        ));
+            ));
 
-        $response = curl_exec($curl);
+            $response = curl_exec($curl);
 
-        curl_close($curl);
-        echo $response;
+            curl_close($curl);
+            echo $response == "" ? "success" : $response;
+        }
+        if($hookType == false || $hookType == "2") {
+            echo "<br>";
+            echo "set Declined Event status---";
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://api.signnow.com/api/v2/events',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS =>'{
+                "event": "document.fieldinvite.decline",
+                "entity_id": "'.$documentId.'",
+                "action": "callback",
+                "attributes": {
+                    "callback": "http://Yp.team/na2/notify_system.asp?status=Declined&phone='.$phone.'",
+                    "use_tls_12": true,
+                    "docid_queryparam": true,
+                    "headers": {
+                    "string_head": "test",
+                    "int_head": 12,
+                    "bool_head": false,
+                    "float_head": 12.24
+                    }
+                }
+                }',
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json',
+                    'Authorization: Bearer '.$config['parameters']['token']
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            echo $response == "" ? "success" : $response;
+        }
     }
 }
 
