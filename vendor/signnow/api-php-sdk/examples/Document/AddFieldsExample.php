@@ -60,7 +60,7 @@ class AddFieldsExample extends BaseExample
      */
     public function execute()
     {
-        $config = require_once __DIR__.'/../config/config.php';
+        $config = require __DIR__.'/../../../../../examples/config/config.php';
         /************Upload document *********************/
         $file_path = "../BUSINESSNAME.pdf";
         $doc = new Upload(new \SplFileInfo($file_path));
@@ -83,6 +83,12 @@ class AddFieldsExample extends BaseExample
         if(isset($_GET['disableBusiness'])) $disableBusiness = true; else $disableBusiness = false;
         if(isset($_GET['subject'])) $subject = $_GET['subject']; else $subject = "info@yplmedia.com Needs Your Signature";
         if(isset($_GET['message'])) $message =  $_GET['message']; else $message = "You've been invited by info@yplmedia.com to fill out and sign the BUSINESSNAME document.";
+        if($hookType == "1" || $hookType == "2" || $hookType == false) {
+            if($phone == "") {
+                echo "phone is required";
+                die();
+            }
+        }
         $cur_date = getdate();
         $date_string = $cur_date['mon']."/".$cur_date['mday']."/".$cur_date['year'];
         /****************Prefill *****************/
