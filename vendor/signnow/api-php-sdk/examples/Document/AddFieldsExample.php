@@ -366,7 +366,7 @@ class AddFieldsExample extends BaseExample
         
         if($result->getStatus() == "success"){
             echo "The Revision Form has been Sent<br>";
-            echo "You can manually invite by using this  https://app.signnow.com/webapp/invite/".$documentId;
+            echo "You can manually invite by using this  https://app.signnow.com/webapp/document/".$documentId;
         }
         else
             echo "The Revision Form has been not Sent";
