@@ -20,7 +20,7 @@ class Token extends Entity
      * @var string|null
      * @Serializer\Type("string")
      */
-    protected $accessToken;
+    public $accessToken;
     
     /**
      * @var string|null

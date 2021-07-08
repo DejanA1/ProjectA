@@ -49,7 +49,8 @@ class AddFieldsExample extends BaseExample
     /**
      * @var array
      */
-    protected $requiredParameters = [];
+    protected $requiredParameters = ['token'];
+    // protected $requiredParameters = [];
     // protected $requiredParameters = ['document_id:'];
     
     /**
@@ -58,9 +59,11 @@ class AddFieldsExample extends BaseExample
      * @throws \ReflectionException
      * @throws \SignNow\Rest\EntityManager\Exception\EntityManagerException
      */
+
     public function execute()
     {
         $config = require __DIR__.'/../../../../../examples/config/config.php';
+        $config['parameters']['token'] = $this->arguments['token'];
         /************Upload document *********************/
         $file_path = "../BUSINESSNAME.pdf";
         $doc = new Upload(new \SplFileInfo($file_path));
@@ -407,7 +410,8 @@ class AddFieldsExample extends BaseExample
             ));
 
             $response = curl_exec($curl);
-
+            // $debugA = $config['parameters']['token'];
+            // echo $debugA;
             curl_close($curl);
             echo $response == "" ? "success" : $response;
         }
@@ -415,7 +419,7 @@ class AddFieldsExample extends BaseExample
             echo "<br>";
             echo "set Declined Event status---";
             $curl = curl_init();
-
+            // $config['parameters']['token'] = $this->arguments['BearToken'];
             curl_setopt_array($curl, array(
                 CURLOPT_URL => 'https://api.signnow.com/api/v2/events',
                 CURLOPT_RETURNTRANSFER => true,

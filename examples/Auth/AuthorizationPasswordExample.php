@@ -25,6 +25,7 @@ class AuthorizationPasswordExample extends BaseExample
      * @throws \ReflectionException
      * @throws \SignNow\Rest\EntityManager\Exception\EntityManagerException
      */
+    
     public function execute()
     {
         return $this->entityManager->create(

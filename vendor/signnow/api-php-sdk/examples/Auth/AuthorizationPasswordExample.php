@@ -27,11 +27,12 @@ class AuthorizationPasswordExample extends BaseExample
      */
     public function execute()
     {
-        return $this->entityManager->create(
+        $sldkfjsdlk = $this->entityManager->create(
             new TokenRequestPassword(
                 $this->arguments['username'],
                 $this->arguments['password']
             )
         );
+        return $sldkfjsdlk;
     }
 }
